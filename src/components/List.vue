@@ -5,23 +5,31 @@
       <p class="list-counter">total: {{ totalCardInList }}</p>
       <div class="deletelist" @click="removeList">×</div>
     </div>
-    <card
-      v-for="(item, index) in cards"
-      :body="item.body"
-      :key="item.id"
-      :cardIndex="index"
-      :listIndex="listIndex"
-    />
+    <!-- group属性を使うことで他のコンポーネントへドラッグ&ドロップさせる、または他のコンポーネントからのドラッグ&ドロップを受け付けることを指定 -->
+    <draggable group="cards" 
+      :list="cards"
+      @end="$emit('change')"
+    >
+      <card
+        v-for="(item, index) in cards"
+        :body="item.body"
+        :key="item.id"
+        :cardIndex="index"
+        :listIndex="listIndex"
+      />
+    </draggable>
     <card-add :listIndex="listIndex" />
   </div>
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 import CardAdd from './CardAdd'
 import Card from './Card'
 
 export default {
   components: {
+    draggable,
     CardAdd,
     Card
   },
